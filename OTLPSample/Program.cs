@@ -25,7 +25,11 @@ builder.Services.AddOpenTelemetry()
     .AddAspNetCoreInstrumentation()
     .AddHttpClientInstrumentation()
     .AddRuntimeInstrumentation()
-    .AddOtlpExporter()
+    .AddOtlpExporter(opt =>
+    {
+        opt.Endpoint = new Uri("http://otel-collector:4317");
+        opt.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
+    })
     .AddConsoleExporter());
 
 var app = builder.Build();
